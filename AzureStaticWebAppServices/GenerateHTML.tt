@@ -1,0 +1,73 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+  <script> 
+        
+        function PostForm () {
+            var data = new FormData();
+              data.append ("window.location.href", window.location.href) ;
+              data.append ("ClientID", <#=ClientID#>) ;
+ 
+<#
+foreach ( var f in FormFields) 
+    {
+#>
+              data.append ("<#=f#>", document.getElementById("<#=f#>").value ) ;
+<#
+    }
+#>
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "<#=url#>");
+
+            xhr.onload = function () {
+                if (xhr.readyState === xhr.DONE) {
+                        if (xhr.status === 200) {
+                            alert (xhr.responseText);
+                        }
+                    }
+                };
+
+            xhr.send(data); 
+
+
+        }
+
+
+
+    </script>
+
+    <form method="post" id="form" enctype="multipart/form-data" >
+        <table>
+
+<#
+foreach ( var f in FormFields) 
+    {
+#>
+            <tr>
+                <td><#=f#>:</td>
+                <td><input type="text" id="<#=f#>" name="<#=f#>" /></td>
+            </tr>
+<#
+    }
+#>
+            <tr>
+                <td></td>
+                <td><input type="button"  value="submit" onclick="PostForm();"/></td>
+            </tr>
+        </table>
+    </form>
+
+
+    
+<#+
+    public string url  { get; set; }
+    public string [] FormFields { get; set; }
+    public string ClientID { get ; set ;}
+
+
+#>
+

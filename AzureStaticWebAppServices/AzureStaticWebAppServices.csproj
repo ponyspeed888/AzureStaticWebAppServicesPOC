@@ -1,0 +1,57 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>d1de366f-fb2a-4a28-8205-f2347dfc03bb</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Models\AzureStaticWebAppServices.db\Client.xaml.cs" />
+    <Compile Remove="Models\AzureStaticWebAppServices.db\EntityViewIndexContentView.cs" />
+    <Compile Remove="Models\AzureStaticWebAppServices.db\FormPosted.xaml.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="AzureStaticWebAppServices.db" />
+    <None Remove="Models\AzureStaticWebAppServices.db\Client.xaml" />
+    <None Remove="Models\AzureStaticWebAppServices.db\FormPosted.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="AzureStaticWebAppServices.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="3.1.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.15">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
+    <PackageReference Include="System.CodeDom" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="GenerateHTML.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>GenerateHTML.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="GenerateHTML.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>GenerateHTML.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+</Project>

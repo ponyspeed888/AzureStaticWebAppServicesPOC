@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "GenerateHTML";
+}
+
+
+
+
+<h1>GenerateHTML</h1>
+
+ @Html.Raw("<pre>"+ Html.Encode(@ViewBag.clientslist) + "</pre>"); 
+
+  <form method="post" id="form" enctype="multipart/form-data" asp-action="GenerateHTML">
+        <table>
+            <tr>
+                <td>Form fields: </td>
+                <td><input type="text" name="FormFields" value="FirstName;LastName"/></td>
+            </tr>
+            <tr>
+                <td>ClientID: </td>
+                <td><input type="text" name="ClientID" /></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><input type="submit"  value="submit" /></td>
+            </tr>
+        </table>
+    </form>
+
+
+
+   <textarea id="txtResult" style="width:100%;height:800px"  >@ViewBag.result </textarea>

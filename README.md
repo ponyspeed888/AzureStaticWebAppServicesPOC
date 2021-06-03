@@ -7,7 +7,8 @@ This sample does not use any authentication, and has no security enabled, it is 
 
 How to try :
 
-1. go to http://ponydemo.azurewebsites.net/Clients, register your Static Page url, remember your client id
+1. go to http://ponydemo.azurewebsites.net/Clients, register your Static Page Host, Scheme and port only, remember your client id
 2. go to http://ponydemo.azurewebsites.net/SimpleFormPost/GenerateHTML , enter you form fields as ";" separated list, enter your client id, after submit, a html and js is returned, copy this text to your page
 3. go to http://ponydemo.azurewebsites.net/FormPosteds to see if you form has been posted
+4. click "Shutdown".  This will shut down the web app.  When you make request to http://ponydemo.azurewebsites.net/, it will start again with new CORS configuration
 

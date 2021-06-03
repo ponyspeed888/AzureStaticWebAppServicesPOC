@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AzureStaticWebAppServices.Models;
+using Microsoft.AspNetCore.Hosting;
 
 namespace AzureStaticWebAppServices.Controllers
 {
@@ -13,10 +14,24 @@ namespace AzureStaticWebAppServices.Controllers
     {
         private readonly AzureStaticWebAppServicesContext _context;
 
-        public ClientsController(AzureStaticWebAppServicesContext context)
+        IApplicationLifetime applicationLifetime;
+
+
+        public ClientsController(AzureStaticWebAppServicesContext context, IApplicationLifetime appLifetime)
         {
             _context = context;
+            applicationLifetime = appLifetime;
+
         }
+
+
+        [HttpGet("Shutdown")]
+        public IActionResult Shutdown()
+        {
+            applicationLifetime.StopApplication();
+            return new EmptyResult();
+        }
+
 
         // GET: Clients
         public async Task<IActionResult> Index()

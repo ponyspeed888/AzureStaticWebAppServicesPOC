@@ -18,6 +18,25 @@ namespace AzureStaticWebAppServices.Controllers
             _context = context;
         }
 
+        public async Task<IActionResult> Clean()
+        {
+            foreach ( var f in _context.FormPosteds.ToList ())
+            {
+                _context.FormPosteds.Remove(f);
+
+            }
+
+            _context.SaveChanges();
+
+            var azureStaticWebAppServicesContext = _context.FormPosteds.Include(f => f.Client);
+
+            return RedirectToAction("index");
+
+            //return View(await azureStaticWebAppServicesContext.ToListAsync());
+        }
+
+
+
         // GET: FormPosteds
         public async Task<IActionResult> Index()
         {

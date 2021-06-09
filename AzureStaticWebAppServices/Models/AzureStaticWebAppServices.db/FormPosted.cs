@@ -22,7 +22,7 @@ namespace AzureStaticWebAppServices.Models
         public string FormData { get; set; }
         [Required]
         [Column(TypeName = "DATETIME")]
-        public byte[] PostedTime { get; set; }
+        public DateTime PostedTime { get; set; }
 
         [ForeignKey(nameof(ClientId))]
         [InverseProperty("FormPosteds")]

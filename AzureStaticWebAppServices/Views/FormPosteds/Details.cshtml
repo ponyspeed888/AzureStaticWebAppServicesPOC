@@ -30,6 +30,21 @@
         </dd>
     </dl>
 </div>
+
+    <table style="width:100%">
+
+        <thead><tr><th style="width:20%">Form Field</th><th style="width:80%">Value</th>></tr></thead>
+
+
+    @foreach (KeyValuePair<string, string> item in ViewBag.dict)
+    {
+        <tr><td>@item.Key :</td><td>@item.Value</td> </tr>
+    }
+
+
+    </table>
+
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model.FormPostedId">Edit</a> |
     <a asp-action="Index">Back to List</a>

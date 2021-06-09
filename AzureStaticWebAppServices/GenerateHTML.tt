@@ -6,22 +6,20 @@
 
   <script> 
         
-        function PostForm () {
+        function PostForm (server) {
             var data = new FormData();
-              data.append ("window.location.href", window.location.href) ;
-              data.append ("ClientID", <#=ClientID#>) ;
  
 <#
 foreach ( var f in FormFields) 
     {
 #>
-              data.append ("<#=f#>", document.getElementById("<#=f#>").value ) ;
+            data.append ("<#=f#>", document.getElementById("<#=f#>").value ) ;
 <#
     }
 #>
 
             var xhr = new XMLHttpRequest();
-            xhr.open("POST", "<#=url#>");
+            xhr.open("POST", server);
 
             xhr.onload = function () {
                 if (xhr.readyState === xhr.DONE) {
@@ -56,8 +54,15 @@ foreach ( var f in FormFields)
 #>
             <tr>
                 <td></td>
-                <td><input type="button"  value="submit" onclick="PostForm();"/></td>
+                <td><input type="button"  value="submit" onclick="PostForm('<#=url#>');"/></td>
             </tr>
+
+           <tr>
+                <td></td>
+                <td><input type="button"  value="submit to test server" onclick="PostForm('http://localhost:19083/SimpleFormPost/ReceivePost');"/></td>
+            </tr>
+
+
         </table>
     </form>
 
@@ -66,7 +71,6 @@ foreach ( var f in FormFields)
 <#+
     public string url  { get; set; }
     public string [] FormFields { get; set; }
-    public string ClientID { get ; set ;}
 
 
 #>

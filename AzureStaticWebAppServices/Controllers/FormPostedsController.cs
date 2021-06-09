@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AzureStaticWebAppServices.Models;
+using Newtonsoft.Json;
 
 namespace AzureStaticWebAppServices.Controllers
 {
@@ -32,15 +33,31 @@ namespace AzureStaticWebAppServices.Controllers
 
             return RedirectToAction("index");
 
-            //return View(await azureStaticWebAppServicesContext.ToListAsync());
         }
 
 
 
         // GET: FormPosteds
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string ClientID = null  )
         {
+            ViewBag.clients = _context.Clients.Select(x => x.ClientUrl).ToArray();
+
+
+            var lst = new List<SelectListItem>();
+            foreach (var itm in _context.Clients)
+                if (itm.ClientUrl == ClientID)
+                    lst.Add(new SelectListItem(itm.ClientUrl, itm.ClientUrl, true));
+                else
+                    lst.Add(new SelectListItem(itm.ClientUrl, itm.ClientUrl));
+
+            ViewBag.clientsList = lst;
+
+
             var azureStaticWebAppServicesContext = _context.FormPosteds.Include(f => f.Client);
+            if (ClientID != null )
+                azureStaticWebAppServicesContext = _context.FormPosteds.Where(x => x.Client.ClientUrl.Contains(ClientID)).Include(f => f.Client); ;
+
+            var xx = await azureStaticWebAppServicesContext.ToListAsync() ;
             return View(await azureStaticWebAppServicesContext.ToListAsync());
         }
 
@@ -60,6 +77,21 @@ namespace AzureStaticWebAppServices.Controllers
                 return NotFound();
             }
 
+
+            var dict = new Dictionary<string, string>();
+
+            try
+            {
+                dict = JsonConvert.DeserializeObject<Dictionary<string, string>>(formPosted.FormData);
+
+            }
+            catch (Exception)
+            {
+
+                //throw;
+            }
+
+            ViewBag.dict = dict;
             return View(formPosted);
         }
 

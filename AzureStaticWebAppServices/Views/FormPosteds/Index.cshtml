@@ -6,6 +6,16 @@
 
 <h1>Index</h1>
 
+
+<form  asp-action="index" id="formFilter" >
+    <select asp-items="@ViewBag.clientsList" name="ClientID" id="ClientID"></select> 
+    <input type="button" value="clear filter"  onclick="javasript: document.getElementById('ClientID').value = '';document.getElementById('formFilter').submit();"/>
+
+    <input type="submit" value="filter" />
+
+</form>
+
+
 <p>
     <a asp-action="Create">Create New</a>
 </p>

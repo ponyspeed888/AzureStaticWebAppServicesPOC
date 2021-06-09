@@ -18,9 +18,9 @@ namespace AzureStaticWebAppServices
     /// Class to produce the template output
     /// </summary>
     
-    #line 1 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
+    #line 1 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\SiteAccessed.tt"
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public partial class GenerateHTML : GenerateHTMLBase
+    public partial class SiteAccessed : SiteAccessedBase
     {
 #line hidden
         /// <summary>
@@ -28,123 +28,29 @@ namespace AzureStaticWebAppServices
         /// </summary>
         public virtual string TransformText()
         {
-            this.Write("\r\n  <script> \r\n        \r\n        function PostForm (server) {\r\n            var da" +
-                    "ta = new FormData();\r\n \r\n");
+            this.Write("\r\n    <script>\r\n\r\n       var xhr = new XMLHttpRequest();\r\n            xhr.open(\"P" +
+                    "OST\", \'");
             
-            #line 12 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
-
-foreach ( var f in FormFields) 
-    {
-
-            
-            #line default
-            #line hidden
-            this.Write("            data.append (\"");
-            
-            #line 16 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(f));
-            
-            #line default
-            #line hidden
-            this.Write("\", document.getElementById(\"");
-            
-            #line 16 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(f));
-            
-            #line default
-            #line hidden
-            this.Write("\").value ) ;\r\n");
-            
-            #line 17 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
-
-    }
-
-            
-            #line default
-            #line hidden
-            this.Write(@"
-            var xhr = new XMLHttpRequest();
-            xhr.open(""POST"", server);
-
-            xhr.onload = function () {
-                if (xhr.readyState === xhr.DONE) {
-                        if (xhr.status === 200) {
-                            alert (xhr.responseText);
-                        }
-                    }
-                };
-
-            xhr.send(data); 
-
-
-        }
-
-
-
-    </script>
-
-    <form method=""post"" id=""form"" enctype=""multipart/form-data"" >
-        <table>
-
-");
-            
-            #line 44 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
-
-foreach ( var f in FormFields) 
-    {
-
-            
-            #line default
-            #line hidden
-            this.Write("            <tr>\r\n                <td>");
-            
-            #line 49 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(f));
-            
-            #line default
-            #line hidden
-            this.Write(":</td>\r\n                <td><input type=\"text\" id=\"");
-            
-            #line 50 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(f));
-            
-            #line default
-            #line hidden
-            this.Write("\" name=\"");
-            
-            #line 50 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(f));
-            
-            #line default
-            #line hidden
-            this.Write("\" /></td>\r\n            </tr>\r\n");
-            
-            #line 52 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
-
-    }
-
-            
-            #line default
-            #line hidden
-            this.Write("            <tr>\r\n                <td></td>\r\n                <td><input type=\"but" +
-                    "ton\"  value=\"submit\" onclick=\"PostForm(\'");
-            
-            #line 57 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
+            #line 10 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\SiteAccessed.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(url));
             
             #line default
             #line hidden
-            this.Write(@"');""/></td>
-            </tr>
+            this.Write(@"');
 
-           <tr>
-                <td></td>
-                <td><input type=""button""  value=""submit to test server"" onclick=""PostForm('http://localhost:19083/SimpleFormPost/ReceivePost');""/></td>
-            </tr>
+            xhr.onload = function () {
+                if (xhr.readyState === xhr.DONE) {
+                        if (xhr.status === 200) {
+                            console.log (xhr.responseText);
+                        }
+                    }
+                };
+
+        xhr.send(); 
 
 
-        </table>
-    </form>
+    </script>
+
 
 
     
@@ -152,10 +58,9 @@ foreach ( var f in FormFields)
             return this.GenerationEnvironment.ToString();
         }
         
-        #line 71 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\GenerateHTML.tt"
+        #line 28 "S:\w\AzureStaticWebAppServices\AzureStaticWebAppServices\SiteAccessed.tt"
 
     public string url  { get; set; }
-    public string [] FormFields { get; set; }
 
 
 
@@ -171,7 +76,7 @@ foreach ( var f in FormFields)
     /// Base class for this transformation
     /// </summary>
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.TextTemplating", "16.0.0.0")]
-    public class GenerateHTMLBase
+    public class SiteAccessedBase
     {
         #region Fields
         private global::System.Text.StringBuilder generationEnvironmentField;

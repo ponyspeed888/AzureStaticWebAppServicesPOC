@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -27,48 +28,60 @@ namespace AzureStaticWebAppServices.Controllers
         [HttpGet]
         [HttpPost]
 
-        public ActionResult GenerateHTML(string FormFields = null, string ClientID = null  )
+        public ActionResult GenerateHTML(string FormFields = null, string ClientUrl = null  )
         {
 
-            //var clients = _context.Clients.ToList();
-            //var clientslist = "";
-            //foreach ( var c in clients)
-            //{
-            //    clientslist += c.ClientUrl + "\r\n"  ;
-            //    //clientslist += HttpUtility.HtmlEncode (c.ClientUrl + "<br/>")  ;
 
-            //}
-
-            //ViewBag.clientslist = clientslist;
+            var lst = new List<SelectListItem>();
+            var urls = _context.Clients.Select(x => x.ClientUrl).ToList();
+            foreach (var itm in urls)
+                    lst.Add(new SelectListItem(itm, itm ) );
 
 
-      
+
+            ViewBag.clientUrlList = lst;
+
 
 
             var result = "";
             if (this.HttpContext.Request.Method.ToLower () == "post")
             {
-                GenerateHTML gen = new GenerateHTML();
                 var fullUrl = this.Url.Action("ReceivePost", nameof (SimpleFormPostController), null, HttpContext.Request.Scheme);
 
-                if (ClientID == null)
+                if (ClientUrl == null)
                 {
-                    return Content($"ClientID not specified");
+                    return Content($"ClientUrl not specified");
                 }
 
 
 
-                Client client = _context.Clients.Where(x => x.ClientId == int.Parse ( ClientID) ).FirstOrDefault();
+                Client client = _context.Clients.Where(x => x.ClientUrl == ClientUrl).FirstOrDefault();
                 if (client == null)
-                    return Content($"ClientID {ClientID} is not registered");
+                    return Content($"ClientUrl '{ClientUrl}' is not registered");
+
+                if ( String.IsNullOrEmpty ( FormFields) )
+                {
+
+                    SiteAccessed genSiteAccess = new SiteAccessed();
+
+                    genSiteAccess.url = fullUrl.Replace("Controller", "");
+
+                    result = genSiteAccess.TransformText();
+
+                }
+                else
+                {
+
+                    GenerateHTML gen = new GenerateHTML();
+
+                    gen.url = fullUrl.Replace("Controller", "");
+                    gen.FormFields = FormFields.Split(";");
+                    result = gen.TransformText();
 
 
 
-                gen.ClientID = client.ClientId.ToString () ;
-                gen.url = fullUrl.Replace("Controller", "");
-                gen.FormFields = FormFields.Split(";");
+                }
 
-                result = gen.TransformText();
             }
 
             ViewBag.result = result;
@@ -86,37 +99,38 @@ namespace AzureStaticWebAppServices.Controllers
         public IActionResult ReceivePost(IFormCollection formFields)
         {
 
+
+            foreach (var r in Request.Headers)
+            {
+                Debug.WriteLine($"{r.Key} {r.Value}");
+
+            }
+
+            string origin = Request.Headers["origin"];
+            string referer = Request.Headers["referer"];
+
+  
+
             var result = "";
 
             try
             {
 
-                var href = formFields["window.location.href"];
-                if ( href.Count == 0  )
-                {
-                    return Content( $"href not specified" );
-                }
-
-
-
-                var cid = formFields["ClientID"];
-                if (cid.Count == 0)
-                {
-                    return Content($"ClientID not specified");
-                }
-
-                Uri myUri = new Uri( href.ToString ()  );
-                string host = myUri.Host;  // host is "www.contoso.com"
-
-
-                //string host = HttpContext.Request.Host.Value;
-
-                string json = JsonConvert.SerializeObject(formFields);
+  
 
                 FormPosted f = new FormPosted();
-                Client client = _context.Clients.Where(x => x.ClientUrl.Contains(host) && x.ClientId == int.Parse (cid) ).FirstOrDefault();
+                Client client = _context.Clients.Where(x => x.ClientUrl.StartsWith(origin) ).FirstOrDefault();
                 if (client == null)
-                    return Content($"Host {host} with ClientID {cid} is not registered");
+                    return Content($"Host {origin} is not registered");
+
+
+
+                Dictionary<string, string> dict = new Dictionary<string, string>();
+                foreach (var ff in formFields)
+                    dict.Add(ff.Key, ff.Value.ToString());
+
+                string json = JsonConvert.SerializeObject(dict);
+
 
                 f.FormData = json;
 
@@ -124,20 +138,7 @@ namespace AzureStaticWebAppServices.Controllers
                 _context.FormPosteds.Add(f);
                 _context.SaveChanges();
 
-                //foreach (var f in formFields)
-                //{
-
-                //    Microsoft.Extensions.Primitives.StringValues y = f.Value;
-
-                //    var str = $"From {host} : {f.Key} : {f.Value.ToString() }";
-                //    Debug.WriteLine(str);
-                //    result += str + "\r\n";
-
-
-
-                //}
-
-                result = $"From {host} : {json}";
+                 result = $"From {origin} : {json}";
 
             }
             catch (Exception exp )

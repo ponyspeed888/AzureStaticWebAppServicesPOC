@@ -14,16 +14,28 @@
         <table>
             <tr>
                 <td>Form fields: </td>
-                <td><input type="text" name="FormFields" value="FirstName;LastName"/></td>
+                <td><input type="text" id="FormFields" name="FormFields" value="FirstName;LastName"/></td>
             </tr>
             <tr>
-                <td>ClientID: </td>
-                <td><input type="text" name="ClientID" /></td>
+
+
+                
+
+
+                <td>Client Url: </td>
+                <td><select asp-items="@ViewBag.clientUrlList"  name="ClientUrl"  ></select> </td>
             </tr>
             <tr>
                 <td></td>
-                <td><input type="submit"  value="submit" /></td>
+                <td><input type="submit"  value="Generate Form Post Script" /></td>
             </tr>
+
+            <tr>
+                <td></td>
+                <td><input type="button"  value="Generate Site Accessed Script" onclick="javasript: document.getElementById('FormFields').value = '';document.getElementById('form').submit();" /></td>
+            </tr>
+
+
         </table>
     </form>
 

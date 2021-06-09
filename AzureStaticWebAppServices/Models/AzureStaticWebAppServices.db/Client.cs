@@ -23,7 +23,6 @@ namespace AzureStaticWebAppServices.Models
         [Required]
         [Column(TypeName = "NVARCHAR(4096)")]
         public string ClientUrl { get; set; }
-        [Required]
         [Column(TypeName = "NVARCHAR(256)")]
         public string Password { get; set; }
 

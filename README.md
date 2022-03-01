@@ -5,7 +5,7 @@ Micorsoft Azure StaticWeb App Service is a new service for high performance stat
 This sample does not use any authentication, and has no security enabled, it is only a Proof of Concept at this stage.  A running sample is in https://ponydemo.azurewebsites.net
 
 
-How to try :
+How to try : 
 
 1. go to https://ponydemo.azurewebsites.net/Clients, register your Static Page Host, Scheme and port only, remember your client id
 2. go to https://ponydemo.azurewebsites.net/SimpleFormPost/GenerateHTML , enter you form fields as ";" separated list, enter your client id, after submit, a html and js is returned, copy this text to your page
